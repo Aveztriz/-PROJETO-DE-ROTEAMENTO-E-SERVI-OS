@@ -1,0 +1,32 @@
+enable
+configure terminal
+enable secret SenhadaEnable
+hostname SW-32
+banner motd "ACESSO APENAS PARA PESSOAS AUTORIZADAS" 
+line console 0
+password SenhadaConsole
+login
+exit
+service password-encryption
+ip domain-name senai.local
+crypto key generate rsa general-key modulus 1024
+username Guilherme privilege 15 secret @123Guizz
+line vty 0 15
+transport input ssh
+exec-timeout 300
+login local
+exit
+login block-for 180 attempts 3 within 60
+vlan 10
+name PCs
+vlan 20
+name PCs
+vlan 100
+name Senai
+interface f0/1
+switchport mode access 
+switchport access vlan 10
+interface f0/2 
+switchport mode access 
+switchport access vlan 20
+do wr
